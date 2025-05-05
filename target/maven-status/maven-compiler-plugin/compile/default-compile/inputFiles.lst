@@ -1,0 +1,16 @@
+C:\Users\danie\Documents\SR\SR\src\main\java\daniel\yaguachi\sr\SistemaFactura.java
+C:\Users\danie\Documents\SR\SR\src\main\java\daniel\yaguachi\sr\SistemaProductos.java
+C:\Users\danie\Documents\SR\SR\src\main\java\daniel\yaguachi\sr\SistemaUsuario.java
+C:\Users\danie\Documents\SR\SR\src\main\java\daniel\yaguachi\sr\SR.java
+C:\Users\danie\Documents\SR\SR\src\main\java\datos\ConexionDB.java
+C:\Users\danie\Documents\SR\SR\src\main\java\datos\FacturaDAO.java
+C:\Users\danie\Documents\SR\SR\src\main\java\datos\PersonaDAO.java
+C:\Users\danie\Documents\SR\SR\src\main\java\datos\ProductoDAO.java
+C:\Users\danie\Documents\SR\SR\src\main\java\modelo\DetalleFactura.java
+C:\Users\danie\Documents\SR\SR\src\main\java\modelo\Factura.java
+C:\Users\danie\Documents\SR\SR\src\main\java\modelo\Persona.java
+C:\Users\danie\Documents\SR\SR\src\main\java\modelo\Producto.java
+C:\Users\danie\Documents\SR\SR\src\main\java\negocio\FacturaServicio.java
+C:\Users\danie\Documents\SR\SR\src\main\java\negocio\PersonaServicio.java
+C:\Users\danie\Documents\SR\SR\src\main\java\negocio\ProductoServicio.java
+C:\Users\danie\Documents\SR\SR\src\main\java\util\JpaUtil.java

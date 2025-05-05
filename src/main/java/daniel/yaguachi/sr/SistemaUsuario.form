@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="daniel.yaguachi.sr.SistemaUsuario">
+  <grid id="mainGrid" layout-manager="GridLayoutManager" row-count="8" column-count="2" same-size-horizontally="false" same-size-vertically="false">
+    <margin top="20" left="20" bottom="20" right="20"/>
+    <constraints>
+      <xy x="20" y="20" width="600" height="500"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <!-- Título -->
+      <component id="title" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Get In Touch"/>
+          <font size="24" style="1"/>
+          <horizontalAlignment value="CENTER"/>
+        </properties>
+      </component>
+
+      <!-- First Name -->
+      <component id="lblFirstName" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="First Name:"/>
+        </properties>
+      </component>
+
+      <component id="txtFirstName" class="javax.swing.JTextField">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="6" anchor="0" fill="1"/>
+        </constraints>
+      </component>
+
+      <!-- Last Name -->
+      <component id="lblLastName" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Last Name:"/>
+        </properties>
+      </component>
+
+      <component id="txtLastName" class="javax.swing.JTextField">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="6" anchor="0" fill="1"/>
+        </constraints>
+      </component>
+
+      <!-- Email -->
+      <component id="lblEmail" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Email:"/>
+        </properties>
+      </component>
+
+      <component id="txtEmail" class="javax.swing.JTextField">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="6" anchor="0" fill="1"/>
+        </constraints>
+      </component>
+
+      <!-- Phone -->
+      <component id="lblPhone" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Phone:"/>
+        </properties>
+      </component>
+
+      <component id="txtPhone" class="javax.swing.JTextField">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="6" anchor="0" fill="1"/>
+        </constraints>
+      </component>
+
+      <!-- Address -->
+      <component id="lblAddress" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Address:"/>
+        </properties>
+      </component>
+
+      <component id="txtAddress" class="javax.swing.JTextField">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="6" anchor="0" fill="1"/>
+        </constraints>
+      </component>
+
+      <!-- Message -->
+      <component id="lblMessage" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Message:"/>
+        </properties>
+      </component>
+
+      <component id="scrollMessage" class="javax.swing.JScrollPane">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3"/>
+        </constraints>
+        <properties>
+          <viewportView class="javax.swing.JTextArea"/>
+        </properties>
+      </component>
+
+      <!-- Submit Button -->
+      <component id="btnSubmit" class="javax.swing.JButton">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Send Message"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
