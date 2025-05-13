@@ -40,7 +40,7 @@ public class SistemaProductos extends JFrame {
 
         // Panel izquierdo (formulario)
         mainPanel.add(crearPanelFormulario(), BorderLayout.WEST);
-        
+
         // Panel derecho (tabla)
         mainPanel.add(crearPanelTabla(), BorderLayout.CENTER);
 
@@ -105,8 +105,8 @@ public class SistemaProductos extends JFrame {
         campo.setForeground(Color.WHITE);
         campo.setCaretColor(Color.WHITE);
         campo.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(55, 60, 66)),
-            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                BorderFactory.createLineBorder(new Color(55, 60, 66)),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
         ));
         campo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         return campo;
@@ -119,21 +119,21 @@ public class SistemaProductos extends JFrame {
         boton.setFocusPainted(false);
         boton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        
+
         boton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 boton.setBackground(color.brighter());
                 boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 boton.setBackground(color);
                 boton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         return boton;
     }
 
@@ -149,7 +149,7 @@ public class SistemaProductos extends JFrame {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-            
+
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 if (columnIndex == 3) return Double.class;
@@ -176,17 +176,17 @@ public class SistemaProductos extends JFrame {
         tabla.setBackground(new Color(45, 50, 56));
         tabla.setForeground(Color.WHITE);
         tabla.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        
+
         // Configurar encabezados
         tabla.getTableHeader().setBackground(new Color(37, 42, 48));
         tabla.getTableHeader().setForeground(Color.WHITE);
         tabla.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         tabla.getTableHeader().setBorder(BorderFactory.createEmptyBorder());
-        
+
         // Configurar selección
         tabla.setSelectionBackground(new Color(0, 120, 212));
         tabla.setSelectionForeground(Color.WHITE);
-        
+
         return tabla;
     }
 
@@ -194,7 +194,7 @@ public class SistemaProductos extends JFrame {
         JLabel label = new JLabel(etiqueta);
         label.setForeground(Color.WHITE);
         label.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        
+
         gbc.gridx = 0;
         gbc.gridy = y;
         gbc.weightx = 0.1;
@@ -207,15 +207,15 @@ public class SistemaProductos extends JFrame {
 
     private Border crearBordeTitulo(String titulo) {
         return BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(48, 54, 61), 1),
-            BorderFactory.createTitledBorder(
-                BorderFactory.createEmptyBorder(10, 10, 10, 10),
-                titulo,
-                TitledBorder.DEFAULT_JUSTIFICATION,
-                TitledBorder.DEFAULT_POSITION,
-                new Font("Segoe UI", Font.BOLD, 16),
-                Color.WHITE
-            )
+                BorderFactory.createLineBorder(new Color(48, 54, 61), 1),
+                BorderFactory.createTitledBorder(
+                        BorderFactory.createEmptyBorder(10, 10, 10, 10),
+                        titulo,
+                        TitledBorder.DEFAULT_JUSTIFICATION,
+                        TitledBorder.DEFAULT_POSITION,
+                        new Font("Segoe UI", Font.BOLD, 16),
+                        Color.WHITE
+                )
         );
     }
 
@@ -225,7 +225,7 @@ public class SistemaProductos extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         UIManager.put("Panel.background", new Color(30, 33, 36));
         UIManager.put("OptionPane.background", new Color(37, 42, 48));
         UIManager.put("OptionPane.messageForeground", Color.WHITE);
