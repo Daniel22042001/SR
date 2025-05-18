@@ -407,7 +407,7 @@ private void aplicarTemaModerno() {
 
     // Configuración de colores para el tema moderno
     Color backgroundColor = new Color(30, 33, 36);
-    Color foregroundColor = Color.WHITE;
+    Color foregroundColor = Color.BLACK;
     Color accentColor = new Color(0, 120, 212);
 
     UIManager.put("Panel.background", backgroundColor);
@@ -436,7 +436,7 @@ private JTextField crearCampoTexto(String placeholder) {
 private JButton crearBotonModerno(String texto, Color color) {
     JButton boton = new JButton(texto);
     boton.setBackground(color);
-    boton.setForeground(Color.WHITE);
+    boton.setForeground(Color.black);
     boton.setFocusPainted(false);
     boton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
     boton.setFont(new Font("Segoe UI", Font.BOLD, 14));

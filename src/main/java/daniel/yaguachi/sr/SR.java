@@ -16,7 +16,8 @@ public class SR {
         ProductoServicio productService = new ProductoServicio();
 
         try {
-            // 1. Registro de Persona
+
+// 1. Registro de Persona
             LocalDate fechaNacimiento = LocalDate.of(1994, 9, 26);
             Persona nuevaPersona = new Persona(
                     "Pedro",
@@ -25,6 +26,7 @@ public class SR {
                     "pedro.galarza@uc.com",
                     fechaNacimiento
             );
+            nuevaPersona.CalcularEdad(); // Calcula la edad basada en la fecha de nacimiento
 
             personaService.AgregarNuevaPersona(nuevaPersona);
             System.out.println("Persona registrada exitosamente!");

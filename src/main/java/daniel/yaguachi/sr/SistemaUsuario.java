@@ -11,7 +11,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Objects;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -146,7 +145,7 @@ private JTextField crearCampoTexto(String placeholder) {
 private JButton crearBotonModerno(String texto, Color color) {
     JButton boton = new JButton(texto);
     boton.setBackground(color);
-    boton.setForeground(Color.WHITE);
+    boton.setForeground(Color.BLACK);
     boton.setFocusPainted(false);
     boton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
     boton.setFont(boton.getFont().deriveFont(Font.BOLD));
@@ -371,14 +370,18 @@ private void aplicarTemaModerno() {
         validarCamposVacios();
         LocalDate fechaNacimiento = parsearFecha(txtFechaNacimiento.getText().trim());
 
-        return new Persona(
+        Persona persona = new Persona(
                 txtNombre.getText().trim(),
                 txtApellido.getText().trim(),
                 txtCedula.getText().trim(),
                 txtCorreo.getText().trim(),
                 fechaNacimiento
         );
+
+        persona.CalcularEdad(); // Esto calculará y establecerá la edad automáticamente
+        return persona;
     }
+
 
     private LocalDate parsearFecha(String textoFecha) {
         try {

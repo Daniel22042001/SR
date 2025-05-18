@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -31,6 +32,13 @@ public class SistemaFactura extends JFrame {
     private ArrayList<DetalleFactura> detallesFactura = new ArrayList<>();
     private final NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("es", "ES"));
     // Agregar como variable de clase
+    private JLabel lblPuntosDisponibles;
+    private JCheckBox chkUsarPuntos;
+    private int puntosDisponibles = 0;
+    private JTextField txtEdadUsuario;
+    private JLabel lblDescuento;
+    private JTextField txtIVA;
+
     private JTextField txtCodigoProducto;
     // Agregar como variables de clase
     private JTextField txtNombreUsuario, txtApellidoUsuario, txtCorreoUsuario;
@@ -104,29 +112,35 @@ public class SistemaFactura extends JFrame {
         gbc.insets = new Insets(5, 10, 5, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
+
         // Crear campos de texto para datos del usuario
         txtNombreUsuario = crearCampoTextoReadOnly("Nombre del cliente");
         txtApellidoUsuario = crearCampoTextoReadOnly("Apellido del cliente");
         txtCorreoUsuario = crearCampoTextoReadOnly("Correo del cliente");
+        txtEdadUsuario = crearCampoTextoReadOnly("Edad del usuario");
+        lblDescuento = new JLabel("Sin descuento");
+        lblDescuento.setForeground(Color.WHITE);
+        txtIVA = crearCampoTextoTotal("0.00");
+
 
         // Agregar campos con sus etiquetas
         agregarCampoConEtiqueta(userDataPanel, "Nombre:", txtNombreUsuario, 0, gbc);
         agregarCampoConEtiqueta(userDataPanel, "Apellido:", txtApellidoUsuario, 1, gbc);
-        agregarCampoConEtiqueta(userDataPanel, "Correo:", txtCorreoUsuario, 2, gbc);
+        agregarCampoConEtiqueta(userDataPanel, "Edad:", txtEdadUsuario, 3, gbc);
 
         // Panel para búsqueda de producto
         JPanel productSearchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         productSearchPanel.setOpaque(false);
 
-        txtCodigoProducto = crearCampoTexto("Ingrese código del producto");
-        JButton btnBuscarProducto = crearBotonModerno("Buscar Producto", new Color(0, 120, 212));
+        //txtCodigoProducto = crearCampoTexto("Ingrese código del producto");
+        //JButton btnBuscarProducto = crearBotonModerno("Buscar Producto", new Color(0, 120, 212));
 
-        JLabel lblCodigo = new JLabel("Código:");
-        lblCodigo.setForeground(Color.WHITE);
+        //JLabel lblCodigo = new JLabel("Código:");
+        //lblCodigo.setForeground(Color.WHITE);
 
-        productSearchPanel.add(lblCodigo);
-        productSearchPanel.add(txtCodigoProducto);
-        productSearchPanel.add(btnBuscarProducto);
+        //productSearchPanel.add(lblCodigo);
+        //productSearchPanel.add(txtCodigoProducto);
+        //productSearchPanel.add(btnBuscarProducto);
 
         // Agregar todos los paneles al panel izquierdo
         leftPanel.add(userSearchPanel);
@@ -154,9 +168,25 @@ public class SistemaFactura extends JFrame {
 
         panel.add(leftPanel, BorderLayout.WEST);
         panel.add(rightPanel, BorderLayout.EAST);
+        JPanel puntosPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        puntosPanel.setOpaque(false);
+
+        lblPuntosDisponibles = new JLabel("Puntos disponibles: 0");
+        lblPuntosDisponibles.setForeground(Color.WHITE);
+
+        chkUsarPuntos = new JCheckBox("Usar puntos disponibles");
+        chkUsarPuntos.setForeground(Color.WHITE);
+        chkUsarPuntos.setOpaque(false);
+        chkUsarPuntos.addActionListener(e -> actualizarTotales());
+
+        puntosPanel.add(lblPuntosDisponibles);
+        puntosPanel.add(chkUsarPuntos);
+
+        leftPanel.add(puntosPanel);
+
 
         // Configurar eventos
-        btnBuscarProducto.addActionListener(e -> buscarProductoPorCodigo());
+        //btnBuscarProducto.addActionListener(e -> buscarProductoPorCodigo());
 
         return panel;
     }
@@ -336,7 +366,12 @@ public class SistemaFactura extends JFrame {
             return;
         }
 
-        String sql = "SELECT id, nombre, apellido, correo FROM usuario WHERE numIdentificacion = ?";
+        String sql = "SELECT u.id, u.nombre, u.apellido, u.edad, " +
+                "COALESCE(pc.puntos_disponibles, 0) as puntos " +
+                "FROM usuario u " +
+                "LEFT JOIN puntos_cliente pc ON u.id = pc.usuario_id " +
+                "WHERE u.numIdentificacion = ?";
+
         try (Connection conn = ConexionDB.AbrirConexion();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -345,10 +380,12 @@ public class SistemaFactura extends JFrame {
 
             if (rs.next()) {
                 idUsuarioSeleccionado = rs.getInt("id");
-                // Llenar los campos con los datos del usuario
                 txtNombreUsuario.setText(rs.getString("nombre"));
                 txtApellidoUsuario.setText(rs.getString("apellido"));
-                txtCorreoUsuario.setText(rs.getString("correo"));
+                // Cambiamos correo por edad
+                txtEdadUsuario.setText(String.valueOf(rs.getInt("edad")));
+                puntosDisponibles = rs.getInt("puntos");
+                lblPuntosDisponibles.setText("Puntos disponibles: " + puntosDisponibles);
                 cargarProductosDisponibles();
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -361,13 +398,17 @@ public class SistemaFactura extends JFrame {
         }
     }
 
+
+
     // Agregar método para limpiar campos de usuario
     private void limpiarCamposUsuario() {
         txtNombreUsuario.setText("");
         txtApellidoUsuario.setText("");
-        txtCorreoUsuario.setText("");
+        txtEdadUsuario.setText("");
         idUsuarioSeleccionado = -1;
+        lblPuntosDisponibles.setText("Descuento disponible: 0%");
     }
+
 
     private void cargarProductosDisponibles() {
         String sql = "SELECT d.id, e.nombre as especialidad, " +
@@ -462,22 +503,54 @@ public class SistemaFactura extends JFrame {
     }
 
     private void actualizarTotales() {
-        float totalSinIVA = 0;
         try {
+            double totalSinIVA = 0.0;
+            // Calcular el total sin IVA sumando todos los items de la factura
             for (int i = 0; i < modeloTablaFactura.getRowCount(); i++) {
-                String totalStr = modeloTablaFactura.getValueAt(i, 3).toString();
-                totalSinIVA += numberFormat.parse(totalStr).floatValue();
+                String totalStr = modeloTablaFactura.getValueAt(i, 3).toString()
+                        .replace("$", "")
+                        .replace(".", "")
+                        .replace(",", ".");
+                totalSinIVA += Double.parseDouble(totalStr);
             }
 
-            float iva = totalSinIVA * 0.12f;
-            float totalConIVA = totalSinIVA + iva;
+            // Aplicar descuento por puntos si está seleccionado
+            double descuento = 0.0;
+            if (chkUsarPuntos != null && chkUsarPuntos.isSelected() && puntosDisponibles > 0) {
+                int puntosAUsar = Math.min(puntosDisponibles, 10);
+                descuento = (puntosAUsar / 100.0) * totalSinIVA; // Cada punto vale 1%
+                totalSinIVA -= descuento;
+                lblDescuento.setText(String.format("Descuento aplicado: $%.2f", descuento));
+            } else {
+                lblDescuento.setText("Sin descuento");
+            }
 
-            txtTotalSinIVA.setText(numberFormat.format(totalSinIVA));
-            txtTotalConIVA.setText(numberFormat.format(totalConIVA));
-        } catch (ParseException e) {
+            // Calcular IVA y total final
+            double iva = totalSinIVA * 0.12;
+            double totalConIVA = totalSinIVA + iva;
+
+            // Formatear y mostrar los totales
+            DecimalFormat df = new DecimalFormat("#,##0.00");
+            txtTotalSinIVA.setText(df.format(totalSinIVA));
+            txtIVA.setText(df.format(iva));
+            txtTotalConIVA.setText(df.format(totalConIVA));
+
+            // Actualizar la interfaz
+            SwingUtilities.invokeLater(() -> {
+                lblDescuento.repaint();
+                txtTotalSinIVA.repaint();
+                txtIVA.repaint();
+                txtTotalConIVA.repaint();
+            });
+
+        } catch (NumberFormatException e) {
             manejarError("Error al calcular totales: " + e.getMessage());
         }
     }
+
+
+
+
 
     private Producto obtenerProductoPorId(int idProducto) {
         Producto producto = null;
@@ -551,55 +624,57 @@ public class SistemaFactura extends JFrame {
             conn = ConexionDB.AbrirConexion();
             conn.setAutoCommit(false);
 
-            // Primero verificamos que todos los productos existan
-            String sqlVerificarProducto = "SELECT id FROM producto WHERE id = ?";
-            PreparedStatement psVerificar = conn.prepareStatement(sqlVerificarProducto);
-
-            for (DetalleFactura detalle : detallesFactura) {
-                int productoId = detalle.getProducto().getId();
-                psVerificar.setInt(1, productoId);
-                ResultSet rsVerificar = psVerificar.executeQuery();
-                if (!rsVerificar.next()) {
-                    throw new Exception("El producto con ID " + productoId + " no existe en la base de datos");
+            // Primero verificamos que el usuario exista
+            String sqlVerificarUsuario = "SELECT id FROM usuario WHERE id = ?";
+            try (PreparedStatement psVerificar = conn.prepareStatement(sqlVerificarUsuario)) {
+                psVerificar.setInt(1, idUsuarioSeleccionado);
+                ResultSet rs = psVerificar.executeQuery();
+                if (!rs.next()) {
+                    throw new SQLException("El usuario seleccionado no existe en la base de datos");
                 }
             }
 
             // Insertar la factura
             String sqlFactura = "INSERT INTO factura (usuario_id, fecha_emision, total, persona_id) VALUES (?, ?, ?, ?)";
-            PreparedStatement psFactura = conn.prepareStatement(sqlFactura, Statement.RETURN_GENERATED_KEYS);
+            int idFacturaGenerada = -1;
 
-            float total = numberFormat.parse(txtTotalConIVA.getText()).floatValue();
+            try (PreparedStatement psFactura = conn.prepareStatement(sqlFactura, Statement.RETURN_GENERATED_KEYS)) {
+                float total = Float.parseFloat(txtTotalConIVA.getText().replace(",", ""));
 
-            psFactura.setInt(1, idUsuarioSeleccionado);
-            psFactura.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-            psFactura.setFloat(3, total);
-            psFactura.setInt(4, idUsuarioSeleccionado);
+                psFactura.setInt(1, idUsuarioSeleccionado);
+                psFactura.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+                psFactura.setFloat(3, total);
+                psFactura.setInt(4, idUsuarioSeleccionado);
 
-            psFactura.executeUpdate();
+                psFactura.executeUpdate();
 
-            ResultSet rs = psFactura.getGeneratedKeys();
-            if (rs.next()) {
-                int idFactura = rs.getInt(1);
+                try (ResultSet generatedKeys = psFactura.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        idFacturaGenerada = generatedKeys.getInt(1);
+                    } else {
+                        throw new SQLException("No se pudo obtener el ID de la factura generada");
+                    }
+                }
+            }
 
-                // Insertar los detalles de la factura
-                String sqlDetalle = "INSERT INTO detalle_factura (factura_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
-                PreparedStatement psDetalle = conn.prepareStatement(sqlDetalle);
-
-                for (DetalleFactura detalle : detallesFactura) {
-                    int productoId = detalle.getProducto().getId();
-                    System.out.println("Insertando detalle con producto_id: " + productoId); // Debug
-
-                    psDetalle.setInt(1, idFactura);
-                    psDetalle.setInt(2, productoId);
-                    psDetalle.setInt(3, detalle.getCantidad());
-                    psDetalle.setFloat(4, detalle.getPrecioUnitario());
-                    psDetalle.executeUpdate();
+            // Procesar los puntos
+            if (idFacturaGenerada != -1) {
+                // Si se usaron puntos, restarlos
+                if (chkUsarPuntos.isSelected() && puntosDisponibles > 0) {
+                    int puntosUsados = Math.min(puntosDisponibles, 10);
+                    actualizarPuntosCliente(idUsuarioSeleccionado, -puntosUsados);
                 }
 
-                conn.commit();
-                JOptionPane.showMessageDialog(this, "Factura generada exitosamente!");
-                limpiarFormulario();
+                // Calcular y agregar nuevos puntos
+                float totalCompra = Float.parseFloat(txtTotalConIVA.getText().replace(",", ""));
+                int nuevosPuntos = (int)(totalCompra / 10);
+                actualizarPuntosCliente(idUsuarioSeleccionado, nuevosPuntos);
             }
+
+            conn.commit();
+            JOptionPane.showMessageDialog(this, "Factura generada exitosamente!");
+            limpiarFormulario();
+
         } catch (Exception ex) {
             if (conn != null) {
                 try {
@@ -620,6 +695,7 @@ public class SistemaFactura extends JFrame {
             }
         }
     }
+
 
     private int obtenerDoctorId(String nombreCompleto) throws SQLException {
         String sql = "SELECT id FROM doctor WHERE CONCAT(nombre, ' ', apellido) = ?";
@@ -866,4 +942,60 @@ public class SistemaFactura extends JFrame {
             manejarError("Error al realizar la búsqueda: " + ex.getMessage());
         }
     }
+    // Agregar método para actualizar puntos
+    private void actualizarPuntosCliente(int usuarioId, int puntosAdicionales) {
+        String sqlVerificarPuntos = "SELECT puntos_disponibles FROM puntos_cliente WHERE usuario_id = ?";
+        String sqlInsertPuntos = "INSERT INTO puntos_cliente (usuario_id, puntos_disponibles) VALUES (?, ?)";
+        String sqlUpdatePuntos = "UPDATE puntos_cliente SET puntos_disponibles = ? WHERE usuario_id = ?";
+
+        try (Connection conn = ConexionDB.AbrirConexion()) {
+            conn.setAutoCommit(false);
+
+            try {
+                // Verificar si ya existe un registro de puntos
+                boolean existenPuntos = false;
+                int puntosActuales = 0;
+
+                try (PreparedStatement psVerificar = conn.prepareStatement(sqlVerificarPuntos)) {
+                    psVerificar.setInt(1, usuarioId);
+                    ResultSet rs = psVerificar.executeQuery();
+                    if (rs.next()) {
+                        existenPuntos = true;
+                        puntosActuales = rs.getInt("puntos_disponibles");
+                    }
+                }
+
+                // Calcular nuevos puntos (evitando negativos)
+                int nuevosPuntos = Math.max(0, puntosActuales + puntosAdicionales);
+
+                // Insertar o actualizar puntos
+                if (existenPuntos) {
+                    try (PreparedStatement psUpdate = conn.prepareStatement(sqlUpdatePuntos)) {
+                        psUpdate.setInt(1, nuevosPuntos);
+                        psUpdate.setInt(2, usuarioId);
+                        psUpdate.executeUpdate();
+                    }
+                } else {
+                    try (PreparedStatement psInsert = conn.prepareStatement(sqlInsertPuntos)) {
+                        psInsert.setInt(1, usuarioId);
+                        psInsert.setInt(2, Math.max(0, puntosAdicionales));
+                        psInsert.executeUpdate();
+                    }
+                }
+
+                conn.commit();
+            } catch (SQLException ex) {
+                conn.rollback();
+                throw ex;
+            }
+        } catch (SQLException ex) {
+            manejarError("Error al actualizar puntos: " + ex.getMessage());
+        }
+    }
+
+
+
+
+
+
 }

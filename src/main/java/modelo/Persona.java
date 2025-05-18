@@ -38,7 +38,7 @@ public class Persona {
 
     // Constructor para nuevos registros (calcula edad automáticamente)
     public Persona(String nombre, String apellido, String numIdentificacion,
-                   String correo, LocalDate fechaNacimiento) {
+                   String correo, LocalDate fechaNacimiento, int edad) {
         this.nombre = Objects.requireNonNull(nombre, "El nombre no puede ser nulo");
         this.apellido = Objects.requireNonNull(apellido, "El apellido no puede ser nulo");
         this.numIdentificacion = Objects.requireNonNull(numIdentificacion, "La cédula no puede ser nula");
@@ -48,8 +48,8 @@ public class Persona {
     }
 
     // Constructor completo para cargar desde BD
-    public Persona(int id, String nombre, String apellido, String numIdentificacion,
-                   String correo, LocalDate fechaNacimiento, int edad) {
+    public Persona(String nombre, String apellido, String numIdentificacion,
+                   String correo, LocalDate fechaNacimiento) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;

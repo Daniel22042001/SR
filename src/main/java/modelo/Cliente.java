@@ -1,4 +1,4 @@
-package modelo;
+/*package modelo;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ public class Cliente extends Persona {
 
     public Cliente(String nombre, String apellido, String numIdentificacion,
                    String correo, LocalDate fechaNacimiento, String direccion){
-        super(nombre, apellido, numIdentificacion, correo, fechaNacimiento);
+        super(nombre, apellido, numIdentificacion, correo, fechaNacimiento, edad);
         this.direccion = direccion;
     }
 
@@ -31,7 +31,7 @@ public class Cliente extends Persona {
     public Cliente(String nombre, String apellido, String numIdentificacion,
                    String correo, LocalDate fechaNacimiento, String direccion,
                    Fidelidad fidelidad){
-        super(nombre, apellido, numIdentificacion, correo, fechaNacimiento);
+        super(nombre, apellido, numIdentificacion, correo, fechaNacimiento, edad);
         this.direccion = direccion;
         this.fidelidad = fidelidad;
     }
@@ -41,7 +41,7 @@ public class Cliente extends Persona {
     public Cliente(int id, String nombre, String apellido, String numIdentificacion,
                    String correo, LocalDate fechaNacimiento, int edad, String direccion,
                    Fidelidad fidelidad){
-        super(id, nombre, apellido, numIdentificacion, correo, fechaNacimiento, edad);
+        super(nombre, apellido, numIdentificacion, correo, fechaNacimiento);
         this.direccion = direccion;
         this.fidelidad = fidelidad;
     }
@@ -64,3 +64,5 @@ public class Cliente extends Persona {
         this.fidelidad = fidelidad;
     }
 }
+
+ */

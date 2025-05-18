@@ -1,4 +1,4 @@
-package modelo;
+/*package modelo;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -85,3 +85,5 @@ public class Fidelidad {
         this.fechaAfiliacion = fechaAfiliacion;
     }
 }
+
+ */
